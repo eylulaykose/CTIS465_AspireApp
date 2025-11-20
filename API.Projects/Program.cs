@@ -1,5 +1,5 @@
 using APP.Projects.Domain;
-using APP.Projects.Features.Tags;
+using APP.Projects.Features.BookTags;
 using CORE.APP.Features;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,20 +9,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-// ======================
-// Add services
-// ======================
-
-// 1) DbContext registration (SQLite)
+// DbContext registration (SQLite)
 var connectionString = builder.Configuration.GetConnectionString(nameof(ProjectsDb));
 builder.Services.AddDbContext<DbContext, ProjectsDb>(options =>
     options.UseSqlite(connectionString));
 
-// 2) MediatR registration – scan assemblies
+// MediatR registration
 builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(TagCreateHandler).Assembly));
+    cfg.RegisterServicesFromAssembly(typeof(BookTagCreateHandler).Assembly));
 
-// 3) Controllers + Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -32,7 +27,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ProjectsDb>();
-    db.Database.EnsureCreated();
+    db.Database.EnsureCreated(); // DB guaranteed
 }
 
 app.MapDefaultEndpoints();

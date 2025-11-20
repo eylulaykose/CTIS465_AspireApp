@@ -4,11 +4,10 @@ namespace APP.Projects.Domain
 {
     public class ProjectsDb : DbContext
     {
-        public ProjectsDb(DbContextOptions<ProjectsDb> options)
-            : base(options)
+        public ProjectsDb(DbContextOptions<ProjectsDb> options) : base(options)
         {
         }
 
-        public DbSet<Tag> Tags { get; set; }
+        public DbSet<BookTag> BookTags { get; set; }
     }
 }
